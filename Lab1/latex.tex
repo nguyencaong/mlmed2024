@@ -1,0 +1,79 @@
+\documentclass[hidelinks]{report}
+\usepackage{graphicx} % Required for inserting images
+\usepackage{amsmath}
+\usepackage{siunitx}
+\usepackage{placeins}
+\usepackage{float}
+\usepackage{hyperref}
+\usepackage{cite}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{xcolor,graphicx}
+\setcounter{secnumdepth}{0}
+\usepackage{titlesec}
+\usepackage[top=1.4in,bottom=1.4in,right=1.25in,left=1.25in]{geometry}
+\usepackage{rotating}
+\usepackage{subcaption}
+\usepackage{lipsum}
+\usepackage{fancyhdr}
+\title{ECG Heartbeat classification}
+\author{Nguyen Cao Nguyen}
+\date{February 2024}
+
+\begin{document}
+
+\maketitle
+
+\section{Introduction}
+Nowadays, ECG is widely used in cardiac health, especially in the diagnosis of cardiovascular diseases. However, manual analysis of ECG signals is difficult and time-consuming. To address this problem,  many studies utilize machine learning to detect diseases. This report applied a deep-learning architecture to classify ECG Heartbeat to predict the diseases. 
+\section{Datasets}
+The dataset used in this report is the PhysioNet MIT-BIH Arrhythmia downloaded from Kaggle. The dataset includes ECG recordings from 47 different subjects. Overall, the percentage of N and Q tend to occupy most of the dataset.
+As a consequence, I decided to reduce the number of the dataset, taking from the 47000th to the end. The new dataset is completed as seen below:
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{download1.png}
+    \caption{Data before equalizing}
+    \label{fig:enter-label}
+\end{figure}
+\begin{figure}
+    \centering
+    \includegraphics[width=0.5\linewidth]{data.png}
+    \caption{Data after equalizing}
+    \label{fig:enter-label}
+\end{figure}
+\pagebreak
+\section{Method}
+This report utilized an existing architecture in another research. All convolution layers are 1-D convolution and apply 32 kernels of size 5. Max-pool layers in the architecture also have the same kernel size, with stride 2. After going through the first convolution layer, there are five residual blocks, including 2 convolution layers, a skip connection, and a pooling layer, connected by ReLu nonlinearities. The final part has 2 fully connected layers and a softmax layer. 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\linewidth]{image.png}
+    \caption{Network architecture}
+    \label{fig:enter-label}
+\end{figure}
+\pagebreak
+\section{Result}
+\begin{figure}[h]
+  \centering
+  \begin{minipage}[b]{0.4\textwidth}
+    \includegraphics[width=\textwidth]{train.png}
+    \caption{train loss}
+  \end{minipage}
+  \hfill
+  \centering
+  \begin{minipage}[b]{0.4\textwidth}
+    \includegraphics[width=\textwidth]{download.png}
+    \caption{valid loss}
+  \end{minipage}
+\end{figure}
+
+The proposed architecture achieved notable results. Both train loss and valid loss are seen to decrease significantly. The appropriate number of epochs should be around 25, where the loss of both tend to stop decreasing.
+Comparing with the test dataset, the model after going through 50 epochs achieved an accuracy of 88\%. As can be seen from the confusion matrix of the test dataset, most of the objects in class 0,1,2,4 were correctly predicted. However, the model seemed to perform badly on the class 3. One of the potential reason is that the data in class 3 may not be sufficient for the model to learn its pattern. 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{confusion.png}
+    \caption{Confusion matrix}
+    \label{fig:enter-label}
+\end{figure}
+\section{Conclusion}
+Overall, we could see that Residual Blocks handle the data of HeartBeat well. However, there are still works to be done with the data as well as the architecture to improve the overall performance, such as the class 3 prediction.
+\end{document}

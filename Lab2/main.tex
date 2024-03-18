@@ -1,0 +1,75 @@
+\documentclass[hidelinks]{report}
+\usepackage{graphicx} % Required for inserting images
+\usepackage{amsmath}
+\usepackage{siunitx}
+\usepackage{placeins}
+\usepackage{float}
+\usepackage{hyperref}
+\usepackage{cite}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{xcolor,graphicx}
+\setcounter{secnumdepth}{0}
+\usepackage{titlesec}
+\usepackage[top=1.4in,bottom=1.4in,right=1.25in,left=1.25in]{geometry}
+\usepackage{rotating}
+\usepackage{subcaption}
+\usepackage{lipsum}
+\usepackage{fancyhdr}
+\title{ECG Heartbeat classification}
+\author{Nguyen Cao Nguyen}
+\date{February 2024}
+
+\begin{document}
+
+\maketitle
+
+\chapter{Introduction}
+Fetal ultrasound imaging is a pivotal tool in obstetric care, enabling clinicians to monitor fetal development, detect anomalies, and ensure the well-being of both the mother and the unborn child. With the advent of sophisticated imaging technologies, such as ultrasound, there has been a significant stride in prenatal diagnosis and intervention, leading to improved outcomes in maternal-fetal healthcare. However, the interpretation of fetal ultrasound images poses a significant challenge due to the complex anatomical structures and variations in fetal positioning.
+In recent years, the application of machine learning and computer vision techniques in medical imaging has revolutionized the field, offering promising solutions for automating image analysis tasks. Among these tasks, segmentation plays a crucial role in extracting precise anatomical structures from medical images, facilitating accurate diagnosis and treatment planning. In the context of fetal ultrasound imaging, segmentation holds immense potential for assisting clinicians in the identification and characterization of fetal organs, tissues, and abnormalities.
+This report aims to provide a comprehensive overview of the advancements in fetal ultrasound image segmentation, encompassing both traditional methods and cutting-edge techniques driven by artificial intelligence (AI) and deep learning. By synthesizing the existing literature and recent developments, we seek to elucidate the challenges, methodologies, and applications of fetal ultrasound image segmentation. Moreover, we endeavor to assess the current state-of-the-art approaches, highlight their strengths and limitations, and delineate future research directions in this rapidly evolving domain.
+\chapter{Data Understanding}
+The dataset includes 1334 two-dimensional (2D) ultrasound images of the HC collected from the database of the Department of Obstetrics of the Radboud University Medical Center, Nijmegen, the Netherlands. Those ultrasound images were taken from 551 women who were getting pregnant by using a routine ultrasound screening exam from May 2014 to May 2015. All images in this study contain barely any growth abnormalities. The devices used are either the Voluson E8 or the Voluson 730 ultrasound device. 
+Each ultrasound image is in the size 800x540 pixels with each pixel size from 0.052 to 0.326 mm. Most data was acquired after 12 and 20 weeks of pregnancy and the HC was annotated manually. An ellipse was drawn in order to fit the shape of the child's head. 
+The train set occupies 75 percent of the original data and the rest is for the test set. 70 percent of the train and test set is in the second semester, and 15 percent is in both the first and third semesters.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{image0.png}
+    \caption{Number of images}
+    \label{fig:enter-label}
+\end{figure}
+\chapter{Methodology}
+\section{U-Net}
+U-Net was first introduced in 2015 by Olaf Ronneberger and his team for their work on biomedical images. U-Net overcomes 2 drawbacks of slicing window architecture at that time which are a lot of redundancy is created due to overlapping patches as well as the long time it takes to train. 
+U-Net's name was derived from its architecture. The "U" shaped model includes convolutional layers and two networks. It has 2 main parts: the encoder and the decoder. The encoder learns a feature map of the input image and attempts to know the important information about the image. The encoder network has 4 encoder blocks with 2 convolutional layers with kernel size 3x3 and a ReLu activation function each. This is then put into a max-pooling layer with kernel size 2x2 in order to reduce the computation cost of the training process. To connect the encoder and the decoder, we use a bottleneck layer in which we have 2 convolutional layers followed by ReLu. The bottleneck results in the final feature map representation. The previous process is similar to any other CNN network, however, U-Net is innovated with skip connections and decoder networks. The decoder network takes the feature map from the bottleneck and creates a segmentation mask with skip connections. It has 4 decoder blocks, each including a transpose convolution with kernel size 2x2. The output of those blocks is concatenated with the relative skip layer connections from the corresponding encoder block. The output is then put through 2 convolutional layers with a kernel size of 3x3 and a ReLu activation function. The utilized skip connections take advantage of high-resolution feature information from the encoder parts to generate a segmentation map. A 1x1 convolution in the final block with a sigmoid function gives us the output of the segmentation map containing pixel-wise classification. 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{1_f7YOaE4TWubwaFF7Z1fzNw.png}
+    \caption{U-Net architecture}
+    \label{fig:enter-label}
+\end{figure}
+\chapter{Result}
+The proposed architecture achieved notable results. Train loss was seen to decrease significantly. The appropriate number of epochs should be around 25, where the loss tends to stop decreasing.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{2.png}
+    \caption{Enter Caption}
+    \label{fig:enter-label}
+\end{figure}
+From the following figure, we can see that the model gets almost all the area inside and draws a bounding box that nearly fits the eclipse
+\begin{figure}[H]
+  \centering
+  \begin{minipage}[b]{0.4\textwidth}
+    \includegraphics[width=\textwidth]{image.png}
+    \caption{example from testset}
+  \end{minipage}
+  \hfill
+  \centering
+  \begin{minipage}[b]{0.4\textwidth}
+    \includegraphics[width=\textwidth]{image3.png}
+    \caption{model's result}
+  \end{minipage}
+\end{figure}
+\chapter{Conclusion}
+Overall, we can easily see that the encoder and decoder architecture has successfully captured the needed information about the head and rebuilt a mask based on the extracted feature map. This architecture may contribute a lot to the medical field if it is effectively used. However, there is also future work to be done to improve and apply to real cases. 
+\end{document}

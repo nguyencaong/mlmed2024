@@ -1,4 +1,4 @@
-\documentclass[hidelinks]{report}
+\documentclass[twocolumn]{report}
 \usepackage{graphicx} % Required for inserting images
 \usepackage{amsmath}
 \usepackage{siunitx}
@@ -16,7 +16,7 @@
 \usepackage{subcaption}
 \usepackage{lipsum}
 \usepackage{fancyhdr}
-\title{ECG Heartbeat classification}
+\title{Fetal Ultrasound Segmentation}
 \author{Nguyen Cao Nguyen}
 \date{February 2024}
 
@@ -28,6 +28,8 @@
 Fetal ultrasound imaging is a pivotal tool in obstetric care, enabling clinicians to monitor fetal development, detect anomalies, and ensure the well-being of both the mother and the unborn child. With the advent of sophisticated imaging technologies, such as ultrasound, there has been a significant stride in prenatal diagnosis and intervention, leading to improved outcomes in maternal-fetal healthcare. However, the interpretation of fetal ultrasound images poses a significant challenge due to the complex anatomical structures and variations in fetal positioning.
 In recent years, the application of machine learning and computer vision techniques in medical imaging has revolutionized the field, offering promising solutions for automating image analysis tasks. Among these tasks, segmentation plays a crucial role in extracting precise anatomical structures from medical images, facilitating accurate diagnosis and treatment planning. In the context of fetal ultrasound imaging, segmentation holds immense potential for assisting clinicians in the identification and characterization of fetal organs, tissues, and abnormalities.
 This report aims to provide a comprehensive overview of the advancements in fetal ultrasound image segmentation, encompassing both traditional methods and cutting-edge techniques driven by artificial intelligence (AI) and deep learning. By synthesizing the existing literature and recent developments, we seek to elucidate the challenges, methodologies, and applications of fetal ultrasound image segmentation. Moreover, we endeavor to assess the current state-of-the-art approaches, highlight their strengths and limitations, and delineate future research directions in this rapidly evolving domain.
+\section{Objective}
+The objective of this study is to develop an advanced computational method for the segmentation of fetal ultrasound images. Specifically, the aim is to accurately draw an ellipse within the fetal ultrasound images, bounding the head. The segmentation techniques will be designed to handle challenges such as noise, artifacts, fetal motion, and variable image quality inherent in ultrasound scans. The architecture which will be used in this project is U-Net.
 \chapter{Data Understanding}
 The dataset includes 1334 two-dimensional (2D) ultrasound images of the HC collected from the database of the Department of Obstetrics of the Radboud University Medical Center, Nijmegen, the Netherlands. Those ultrasound images were taken from 551 women who were getting pregnant by using a routine ultrasound screening exam from May 2014 to May 2015. All images in this study contain barely any growth abnormalities. The devices used are either the Voluson E8 or the Voluson 730 ultrasound device. 
 Each ultrasound image is in the size 800x540 pixels with each pixel size from 0.052 to 0.326 mm. Most data was acquired after 12 and 20 weeks of pregnancy and the HC was annotated manually. An ellipse was drawn in order to fit the shape of the child's head. 
